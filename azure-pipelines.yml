@@ -1,0 +1,31 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'AzureRMPipeline-conn'
+    subscriptionId: '84b052d6-d033-4ad1-b3e1-c24639fd9df5'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'AzureRMPipeline-rg'
+    location: 'UK West'
+    templateLocation: 'URL of the file'
+    csmFileLink: 'https://raw.githubusercontent.com/gulmipatanayak/PL-KeyVaultArmTemp-repo/master/CreateKeyVault/azuredeploy.json'
+    overrideParameters: '-projectName[EnterAProjectName]'
+    deploymentMode: 'Incremental'
+    deploymentName: 'DeployPipilineTemplate'
+
+- script: 
+  displayName: 'Run a multi-line script'
